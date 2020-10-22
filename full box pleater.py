@@ -6,38 +6,40 @@ Make sure you come back down for every time you go up. Thus the red lines means 
 Don't do things like try to go down first and then go up. bad juju if you do
 Make sure to press Start Over when drawing a new tree. It won't clear your tree otherwise, even if the drawing
 is empty. However, your cp will still remain, until you click calculate
-
-
 If you see that it says "faulty solution," click through the other solutions; and if you still don't see anything
 you like, then increase the grid size.
-
-
-
 bruh something doesn't feel right with this system, i guess there's no way around it
 that this is meant for simple trees
-
 subriver adds[length,[]] and index +1 to show we went 1 level deeper
 flaps add at the current index level. if index = 0, add directly into main list [[1],[2],[1]]
     if index 1, add to the last item [[1],2,[1,[here]]]
-
 downsub river closes the subriver and index-1.
     if index 1, then close up the last one. adds length to the last item. [1,[flaps],length]
-
 [[1], [1], [1], 4, [4], [4, [[1], [1], [1]], 4], 4, [4, [[1], [1], [1], [1]], 4], [8], 4, [1], [1], [1], [1]]
 [[1,1,1],4,[4],[4,[1,1,1],4],4,[4,[1,1,1,1],4],[8],4,[1,1,1,1]]
 [[1, 3, 4, 2, 5, 2, 5, 7]]
-
-
 and maybe make [[1],1,... -> [[2],...
-
 """
-
+btn_params = {
+    'padx': 16,
+    'pady': 1,
+    'bd': 4,
+    'fg': 'white',
+    'bg': '#2E76CF',
+    'font': ('arial', 14),
+    'relief': 'flat',
+    'activebackground': "#173b67"
+}
 
 from math import cos as cos
 from math import sin as sin
 from math import radians as radians
 from tkinter import *
 master = Tk()
+master.configure()
+master.title("Boxpleater")
+photo = PhotoImage(file="Crane.png")
+master.iconphoto(False, photo)
 canvas2 = Canvas(master,width=600,height = 450)
 canvas2.pack()
 
@@ -90,8 +92,8 @@ def make_flap(length):
     #else just dump it in the tree
 def make_flap2():
     length = eval(Length.get())
-    make_flap(length)    
-    
+    make_flap(length)
+
 def make_river(length):
     if indexlevel == 0:
         global x
@@ -114,7 +116,7 @@ def make_river(length):
 def make_river2():
     length = eval(Length.get())
     make_river(length)
- 
+
 def make_subriver(length):
     global bigangle
     global angle
@@ -133,7 +135,7 @@ def make_subriver(length):
     angle = 150 #for the flaps
     canvas2.delete(cursor)
     cursor = canvas2.create_rectangle(x-2,y-2,x+2,y+2,fill = "red")
-     
+
 
     global subtree
     global dumphere
@@ -152,7 +154,7 @@ def make_subriver(length):
         dumphere.append([length,[]])#we nest a subsubbranch into the subbranch
         subtree = dumphere[-1]  #from now on we are putting things into this new subsubbranch
         dumphere = subtree[1]
-        
+
     indexlevel += length
     angletrack[indexlevel] = bigangle
 
@@ -212,7 +214,7 @@ def down_subriver2():
         #or have a start over button
 
 
-#treeprogress = str(tree)       
+#treeprogress = str(tree)
 
 def done():
     global progress
@@ -245,7 +247,7 @@ def go_back():
     for x in range(0,progresslength):
         eval(progress[0])
         del(progress[0]) #because running each function stored in progress will add more to progress
-    
+
 def start2():
     global done
     flap = Button(master, text="Create Flap", command = make_flap2)
@@ -281,7 +283,10 @@ import math
 import sys
 import random
 from tkinter import *
-bp_packing = Tk()
+bp_packing = Toplevel()
+bp_packing.title("Boxpleater")
+photo = PhotoImage(file="Crane.png")
+bp_packing.iconphoto(False, photo)
 canvas = Canvas(bp_packing,width=900,height=700)
 canvas.pack()
 entry = Entry(bp_packing,bd = 5)
@@ -352,12 +357,12 @@ def blobify(tree):
         for x in range(0,len(tree)): #take each item of the main list. either list or river. x = object in main list
             if isinstance(tree[x],list) == True: #if it's a list and does not have a list
                 hassublist = False
-                index.append(x)   
+                index.append(x)
                 for y in range(0,len(tree[x])):   #check if it's a branch cluster or has rivers
                     if isinstance(tree[x][y],list) == True:
                         hassublist = True
                 if hassublist == False:  #we want to add these branches (tree[x]) to branchlengths[] and record locations in branchpositions[]
-                    #index.append(x)                    
+                    #index.append(x)
                     for y in range(0,len(tree[x])):
                         branchlengths.append(tree[x][y])
                         index.append(y)
@@ -365,10 +370,10 @@ def blobify(tree):
                         branchpositions.append(indexcopy)
                         #print(index)
                         index.pop()
-                    index.pop()      
+                    index.pop()
                 if hassublist == True:
                     branchify(tree[x],index) #this way, you "bring along" the index with you and add onto it
-            if isinstance(tree[x],list) == False:                    
+            if isinstance(tree[x],list) == False:
                 indexcopy = index[:]
                 indexcopy.append(x)
                 #indexcopy.append(tree[x])
@@ -379,7 +384,7 @@ def blobify(tree):
 
 
 
-    #now to actually make the blob            
+    #now to actually make the blob
     r = 0 #what river we're on
     B = 0 #what branch we're on
     for b in range(0,len(branchlengths)-1):  #for each branch: jump to the next one
@@ -399,7 +404,7 @@ def blobify(tree):
         for b in range(0,len(branchlengths)-1):  #for each branch: jump to the next one
             bloblength = branchlengths[b]
             for r in range(0,len(riverlengths)):
-                if riverpositions[r] > branchpositions[b] and riverpositions[r] < branchpositions[b+1]: 
+                if riverpositions[r] > branchpositions[b] and riverpositions[r] < branchpositions[b+1]:
                     bloblength = bloblength + riverlengths[r]
             bloblength = bloblength + branchlengths[b+1]
             blob.append(bloblength)
@@ -416,7 +421,7 @@ def blobify(tree):
 
 
 
-                    
+
 #more global variables
 successful_starting_positions = []
 combinations = []
@@ -450,7 +455,7 @@ def pack(blob):   #generates combinations (arrangement on the edge)
             while sum(side2)<=mingrid-blob[k]:
                 side2.append(blob[k])
                 k = k+1
-                if k == len(blob):  
+                if k == len(blob):
                     k=0
             side3 = []
             while sum(side3)<=mingrid-blob[k]:
@@ -458,7 +463,7 @@ def pack(blob):   #generates combinations (arrangement on the edge)
                     break
                 side3.append(blob[k])
                 k = k+1
-                if k == len(blob):  
+                if k == len(blob):
                     k=0
             side4 = []
             while sum(side4)<=mingrid-blob[k]:
@@ -466,7 +471,7 @@ def pack(blob):   #generates combinations (arrangement on the edge)
                     break   #if it's already got all the sides, then it's done, don't add more
                 side4.append(blob[k])
                 k = k+1
-                if k == len(blob):  
+                if k == len(blob):
                     k=0
             if k == x:
                 packing = side1,side2,side3,side4   #tuple, where each element is a list
@@ -496,8 +501,8 @@ def pack(blob):   #generates combinations (arrangement on the edge)
                 deletethis.append(combinations[x])
         for x in range(0,len(deletethis)):
             combinations.__delitem__(combinations.index(deletethis[x]))"""
-            
-            
+
+
     combinations.append(int(mingrid))     #this is so the drawing function can easily access it
     print("combinations:",combinations)
     return combinations
@@ -530,7 +535,7 @@ def Gridbump():
     canvas.delete("all")
     drawgrid(blob, tree, C)
     coverup(C)
-    bump += 1  #this lets us prevent going from below the minimum grid size 
+    bump += 1  #this lets us prevent going from below the minimum grid size
 
 def gridlower():
     global bump
@@ -549,7 +554,7 @@ def gridlower():
     elif bump == 0:
         print("==========================")
         print("oma this is the minimum grid size")
-    
+
 combo = [] #doesn't matter what's in it, the length of it is C but global
 def lastsolution():
     C = len(combo)
@@ -559,7 +564,7 @@ def lastsolution():
         cp_file = []
         canvas.delete("all")
         C -= 1
-        combo.__delitem__(0) 
+        combo.__delitem__(0)
         #print("tree",tree)
         #print("blob",blob)
         #print("combinations",combinations)
@@ -567,7 +572,7 @@ def lastsolution():
         drawgrid(blob, tree, C)
         coverup(C)
     else:
-        print("bruh this is the first solution. Increase grid size if needed.")    
+        print("bruh this is the first solution. Increase grid size if needed.")
 
 def nextsolution():
     print("==============")
@@ -598,7 +603,7 @@ def file_save():
     for x in range(0,len(cp_file)):
         #print(cp_file[x])
         filename.write(str(cp_file[x])+"\n")
-        
+
     filename.close()
     boi.withdraw()
 
@@ -621,11 +626,11 @@ def finddistance(flap1, flap2): #input branchpositions like [0,0] and [2,1,0]
     distance = 0
     index1 = branchpositions.index(flap1)
     index2 = branchpositions.index(flap2)
-    
+
     for x in range(0,len(riverpositions)):
         if ((riverpositions[x]<flap2 and riverpositions[x]>flap1) or (riverpositions[x]>flap2 and riverpositions[x]<flap1)) and len(riverpositions[x])<max(len(flap1),len(flap2)):
             distance += riverlengths[x] #because riverlengths and riverpositions are "synced up"
-    distance += branchlengths[index1]+branchlengths[index2]        
+    distance += branchlengths[index1]+branchlengths[index2]
     return distance
 
 EPS = 1e-12 # Very small number, 10^(-12), to take care of roundoff error
@@ -649,7 +654,7 @@ def blackhole():
                 distance = finddistance(branchpositions[flap[2]],branchpositions[testflap[2]])*500/mingrid #the minimum distance they can be
 
                 if flap[3] == 1 and k!=n: #if this is the top side, and don't test against self:
-                    if less(max(abs(flap[0]-testflap[0]),abs(flap[1]-testflap[1])-500/mingrid),distance):  
+                    if less(max(abs(flap[0]-testflap[0]),abs(flap[1]-testflap[1])-500/mingrid),distance):
                         move = False #something might be wrong with the -500/mingrid part
                 if flap[3] == 2 and k!=n: #if this is the right side:
                     if less(max(abs(flap[0]-testflap[0])-500/mingrid,abs(flap[1]-testflap[1])),distance):
@@ -678,13 +683,13 @@ def blackhole():
 
 def cp(tk):  #convert tk coordinates into .cp coordinates
 	return (tk-100)*400/500-200
-    
+
 def drawcoordinates(branchcoordinates):
     for f in range(0,len(branchcoordinates)):
         flap = branchcoordinates[f]
 
         radius = flap[4] #in tkinter units
-        
+
         if flap[3] == 1:
             canvas.create_line(flap[0],flap[1],flap[0]-min(flap[0]-100,radius),flap[1]+min(flap[0]-100,radius),width = 2, fill = 'red') # /
             canvas.create_line(flap[0],flap[1],flap[0]+min(600-flap[0],radius),flap[1]+min(600-flap[0],radius),width = 2, fill = 'red') # \
@@ -713,7 +718,7 @@ def drawcoordinates(branchcoordinates):
             cp_file.append("3 "+str(cp(flap[0]-radius))+" "+str(cp(flap[1]-min(flap[1]-100,radius)))+" "+str(cp(600))+" "+str(cp(flap[1]-min(flap[1]-100,radius))))
             cp_file.append("3 "+str(cp(flap[0]-radius))+" "+str(cp(flap[1]+min(600-flap[1],radius)))+" "+str(cp(600))+" "+str(cp(flap[1]+min(600-flap[1],radius))))
 
-            
+
         if flap[3] == 3:
             canvas.create_line(flap[0],flap[1],flap[0]-min(flap[0]-100,radius),flap[1]-min(flap[0]-100,radius),width = 2, fill = 'red') # /
             canvas.create_line(flap[0],flap[1],flap[0]+min(600-flap[0],radius),flap[1]-min(600-flap[0],radius),width = 2, fill = 'red') # \
@@ -741,7 +746,7 @@ def drawcoordinates(branchcoordinates):
             cp_file.append("3 "+str(cp(flap[0]+radius))+" "+str(cp(flap[1]+min(flap[1]-100,radius)))+" "+str(cp(flap[0]+radius))+" "+str(cp(flap[1]-min(600-flap[1],radius))))
             cp_file.append("3 "+str(cp(flap[0]+radius))+" "+str(cp(flap[1]+min(flap[1]-100,radius)))+" "+str(cp(100))+" "+str(cp(flap[1]+min(flap[1]-100,radius))))
             cp_file.append("3 "+str(cp(flap[0]+radius))+" "+str(cp(flap[1]-min(600-flap[1],radius)))+" "+str(cp(100))+" "+str(cp(flap[1]-min(600-flap[1],radius))))
-                    
+
 
 
 
@@ -760,7 +765,7 @@ def drawgrid(blob,tree,C):  #blob will be packed, then used for markings and gri
     lastsolution.place(x=700,y=220)
 
     filesave.place(x=700,y=280)
-    
+
     canvas.create_rectangle(100,600,600,100,outline = "black", width = 2)
     mingrid = combinations[-1]
     grid(mingrid)
@@ -776,10 +781,10 @@ def drawgrid(blob,tree,C):  #blob will be packed, then used for markings and gri
     global branchcoordinates
     branchcoordinates = [] #each entry will be (x,y). saved as (spot1,100,s) for example.
 
-    #s: where in branchlengths we are drawing. increase 1 every time, then wrap around when reach the end. 
+    #s: where in branchlengths we are drawing. increase 1 every time, then wrap around when reach the end.
     global s
     s = successful_starting_positions[C]#################################change the 0 here for next solution#####################################
-    def drawtopmarks(): #side 1, draws without regard for constraints.                                         
+    def drawtopmarks(): #side 1, draws without regard for constraints.
         #s = successful_starting_positions[C]
         global s
         spot1 = 100 #we add to this variable so the marks build off the previous
@@ -787,7 +792,7 @@ def drawgrid(blob,tree,C):  #blob will be packed, then used for markings and gri
 
         spot1 = 600-(500/mingrid)*sum(packing1side1)
 
-        
+
         #print(packing1side1)
         for x in range(0,len(packing1side1)+1): #for all the flaps in this blobside
             if s >= len(branchlengths) :
@@ -803,7 +808,7 @@ def drawgrid(blob,tree,C):  #blob will be packed, then used for markings and gri
             cp_file.append("3 "+str(spot1cp-radius*(400/500))+" "+str(-200+radius*(400/500))+" "+str(spot1cp+radius*(400/500))+" "+str(-200+radius*(400/500)))'''
 
             branchcoordinates.append([spot1,100,s,1,radius])  #where the branch is, and then which branch it was, and that it was the top side
-            
+
             s = s+1
             if x in range(0,len(packing1side1)):
                 spot1 = spot1+ (500/mingrid)*packing1side1[x]
@@ -813,7 +818,7 @@ def drawgrid(blob,tree,C):  #blob will be packed, then used for markings and gri
 
     global faulty
     faulty = False #faulty is if a flap gets pushed off the edge
-                
+
     def drawrightmarks(): #side2
         #s = successful_starting_positions[C]+len(packing1side1)
         global s, faulty
@@ -854,7 +859,7 @@ def drawgrid(blob,tree,C):  #blob will be packed, then used for markings and gri
         right = spot2
         if spot2>600:
             faulty = True
-            
+
     def drawbottommarks(): #side3
         global bottom, faulty
         #s = successful_starting_positions[C]+len(packing1side1)+len(packing1side2)
@@ -871,7 +876,7 @@ def drawgrid(blob,tree,C):  #blob will be packed, then used for markings and gri
                 radius = branchlengths[s]*(500/mingrid) ########################
             canvas.create_line(spot3, 600, spot3, 615, width = 3, fill = "red")
             if x>0:
-                for test in range(0,len(branchcoordinates)):   
+                for test in range(0,len(branchcoordinates)):
                     distance = finddistance(branchpositions[s],branchpositions[branchcoordinates[test][2]])
                     while less(max(abs(spot3-branchcoordinates[test][0]),abs(600-branchcoordinates[test][1])), distance*500/mingrid) and branchpositions[s] != branchpositions[branchcoordinates[test][2]]:
                            #the second condition for the black hole function later, when it runs through all the branchcoordinates it will find itself and return distance = flaplength*2
@@ -894,10 +899,10 @@ def drawgrid(blob,tree,C):  #blob will be packed, then used for markings and gri
         if spot3<100:
             faulty = True
 
-                
+
     def drawleftmarks(): #side4
         global faulty
-        #s = successful_starting_positions[C]+len(packing1side1)+len(packing1side2)+len(packing1side3)        
+        #s = successful_starting_positions[C]+len(packing1side1)+len(packing1side2)+len(packing1side3)
         global s
         s-=1
         spot4 = 600
@@ -911,7 +916,7 @@ def drawgrid(blob,tree,C):  #blob will be packed, then used for markings and gri
             canvas.create_line(100,spot4,85,spot4, width = 3, fill = "red")
             if x>0:
 
-                for test in range(0,len(branchcoordinates)):   
+                for test in range(0,len(branchcoordinates)):
                     distance = finddistance(branchpositions[s],branchpositions[branchcoordinates[test][2]])
                     while less(max(abs(100-branchcoordinates[test][0]),abs(spot4-branchcoordinates[test][1])), distance*500/mingrid) and branchpositions[s] != branchpositions[branchcoordinates[test][2]]:
                            #the second condition for the black hole function later, when it runs through all the branchcoordinates it will find itself and return distance = flaplength*2
@@ -934,7 +939,7 @@ def drawgrid(blob,tree,C):  #blob will be packed, then used for markings and gri
         if spot4 <100:
             faulty = True
             #the left side is a little bit different, could be buggy
-                
+
     drawtopmarks()
     drawrightmarks()
     drawbottommarks() #doesn't really draw, tbh
@@ -945,12 +950,12 @@ def drawgrid(blob,tree,C):  #blob will be packed, then used for markings and gri
         blackhole()
     drawcoordinates(branchcoordinates)
 
-    
+
     cp_file.append("1 -200 -200 -200 200")
     cp_file.append("1 200 -200 200 200")
     cp_file.append("1 -200 -200 200 -200")
     cp_file.append("1 -200 200 200 200")
-    
+
     if faulty == True:
         canvas.create_text(350,350, text = "WARNING: faulty solution")
     if len(combinations)==2 and faulty == True:
@@ -961,7 +966,7 @@ def drawgrid(blob,tree,C):  #blob will be packed, then used for markings and gri
 
 
 
-    
+
 def coverup(C): #coverup mess outside the square
     canvas.create_rectangle(0,0,710,99,fill = "white",width = 0)
     canvas.create_rectangle(0,601,710,710, fill = "white",width = 0)
@@ -1025,8 +1030,6 @@ Although many designers use box pleating, Boxpleater is more of a tool than a re
     designers. There are many design aspects that Boxpleater can't do, such as texture, levelshifters,
     or other unaxial bp structures--much less shaping, and all that is left to humans. After all,
     origami is an art, and the program can only do the math.
-
-
 THEORY EXPLANATION
 1. tree
 2. string figure (skipped)
@@ -1035,7 +1038,6 @@ THEORY EXPLANATION
 5. the square and vertices on the edge
 6. flaps move in (black hole)
 7. packing is drawn
-
 1. The tree is input numerically by writing out a list of lists. rivers are integers
     on their own, are not in a list (kinda. it's complicated)
 2. skip. String figures are more to show humans how the blob and tree are related.
@@ -1056,22 +1058,15 @@ THEORY EXPLANATION
     and going clockwise) will try to move in towards the center, as if sucked
     by a "black hole." They will take turns moving in one unit at a time, until they can
     no longer move without breaking the distance constraint. This should make the rivers easier for the user to see.
-
-
     then a square and
     ridge creases are drawn around the vertex with "radius" being the flap length for
     that vertex. If there are wasted edges, the flaps on that edge might be able to shift.
-
-
 STILL NEEDS TO BE DONE
 =========
 fix the situations that print "this might get weird". example: treepacking([[1,1],2,[3,1]]). This one has empty lists
-
 show rivers
-
 can draw some of the axial and axial+1 creases (but how to account for mv?)
 can do bw at least by drawing concentric squares along the grid, but only if can shift flaps
-
 Things Boxpleater can't do (yet):
     symmetry
     draw rivers
@@ -1079,14 +1074,12 @@ Things Boxpleater can't do (yet):
     use center flaps to fill in gaps
     draw the cp based on packing (axial and axial+1)
     draw it mv
-
     pack optimally with the center flaps taken into account
     figure out best way to cut shape into tree (2d design, vector input?)
         otpimize edge: minimum total branch length sum
         optimize paper: minimum average branch length (what about rivers?)
         connect these two would be op
     
-
 """
 #[[1],[1,[1],[1,[1,1],1],1],1,[1],[1,[1],[1,[1,1],1],1],[1]] multiple solutions
 #[[1],[1,[1,1],1],1,[1],[1,[1],[1,[1,1],1],1],[1]]
