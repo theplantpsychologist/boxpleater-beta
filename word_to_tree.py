@@ -66,7 +66,7 @@ letters ={
     '0':[[2,2],1]
 }
     
-def convert (word):
+def convert(word):
     tree = []
     Word = list(word)
     for x in range(0,len(Word)):
