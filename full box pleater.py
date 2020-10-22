@@ -1091,6 +1091,6 @@ Things Boxpleater can't do (yet):
 #[[1],[1,[1],[1,[1,1],1],1],1,[1],[1,[1],[1,[1,1],1],1],[1]] multiple solutions
 #[[1],[1,[1,1],1],1,[1],[1,[1],[1,[1,1],1],1],[1]]
 
-#master.mainloop()
+master.mainloop()
 
 from word_to_tree import *
