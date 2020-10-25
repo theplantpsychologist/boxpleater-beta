@@ -92,7 +92,10 @@ def make_flap(length):
     #else just dump it in the tree
 def make_flap2():
     length = eval(Length.get())
-    make_flap(length)
+    if length > 0:
+        make_flap(length)
+    else:
+        print("please input a positive non-zero number")
 
 def make_river(length):
     if indexlevel == 0:
@@ -115,7 +118,10 @@ def make_river(length):
         print("bruh you're still in the subriver, come down first")
 def make_river2():
     length = eval(Length.get())
-    make_river(length)
+    if length > 0:
+        make_river(length)
+    else:
+        print("please input a positive non-zero number")
 
 def make_subriver(length):
     global bigangle
@@ -167,8 +173,10 @@ def make_subriver(length):
 #[    [ [] ]] outer brackets are tree. second brackets are subtree. inner brackets are dumphere for new stuff. gobackdown is outside subtree
 def make_subriver2():
     length = eval(Length.get())
-    make_subriver(length)
-
+    if length > 0:
+        make_subriver(length)
+    else:
+        print("please input a positive non-zero number")
 
 def down_subriver(length):
     global angle
