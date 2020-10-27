@@ -38,7 +38,7 @@ from tkinter import *
 master = Tk()
 master.configure()
 master.title("Boxpleater")
-photo = PhotoImage(file="Crane.png")
+photo = PhotoImage(file="crane.png")
 master.iconphoto(False, photo)
 canvas2 = Canvas(master,width=600,height = 450)
 canvas2.pack()
@@ -293,7 +293,7 @@ import random
 from tkinter import *
 bp_packing = Toplevel()
 bp_packing.title("Boxpleater")
-photo = PhotoImage(file="Crane.png")
+photo = PhotoImage(file="crane.png")
 bp_packing.iconphoto(False, photo)
 canvas = Canvas(bp_packing,width=900,height=700)
 canvas.pack()
